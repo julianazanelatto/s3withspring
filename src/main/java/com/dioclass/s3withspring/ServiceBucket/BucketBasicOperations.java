@@ -28,10 +28,17 @@ public class BucketBasicOperations {
     public static Bucket createBucket(String bucketName) {
         final AmazonS3 s3 = s3WithCredentials();
         Bucket newbucket = null;
+<<<<<<< HEAD
         System.out.println("Teste de entrada na função\n");
         boolean doesExists = s3.doesBucketExistV2(bucketName);
         if (doesExists) {
             System.out.format("Bucket %s already exists.\n", bucketName);
+=======
+        //System.out.println("Teste de entrada na função\n");
+        boolean doesExists = s3.doesBucketExistV2(bucketName);
+        if (doesExists) {
+            System.out.format("*****\nBucket %s already exists.\n*****\n", bucketName);
+>>>>>>> Initial commit
             newbucket = getBucket(bucketName);
         } else {
             try {
@@ -44,10 +51,13 @@ public class BucketBasicOperations {
         return newbucket;
     }
 
+<<<<<<< HEAD
     public static void deleteBucket(String nameBucket) {
         //primeiro remover objetos do Bucket (caso contrário não é possível deleta-lo)
     }
 
+=======
+>>>>>>> Initial commit
     public static void listOfBuckets(){
         final AmazonS3 s3 = s3WithCredentials();
         List<Bucket> bucketlist = s3.listBuckets();

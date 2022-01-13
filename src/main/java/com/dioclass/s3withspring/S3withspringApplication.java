@@ -2,14 +2,9 @@ package com.dioclass.s3withspring;
 
 import com.amazonaws.services.s3.model.Bucket;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
 import static com.dioclass.s3withspring.ServiceBucket.BucketBasicOperations.*;
-@Table(uniqueConstraints = {
-		@UniqueConstraint(name = "uc_s3withspringapplication_b", columnNames = {"b"})
-})
+import static com.dioclass.s3withspring.ServiceObjects.ObjectServices.*;
+
 @SpringBootApplication
 public class S3withspringApplication {
 
@@ -23,7 +18,16 @@ public class S3withspringApplication {
 		else
 			System.out.println("Done");
 
+		//listar todos os buckets existentes
+		listOfBuckets();
 
+		//upload de imagem
+		String imagePath = "/home/jm/Pictures/index.jpeg";
+		uploadObject(bucket_name,imagePath);
+
+		// tentativa de upload de um arquivo .txt
+		String filePathTxt = "/home/jm/aws s3";
+		uploadObject(bucket_name,filePathTxt);
 	}
 
 }
