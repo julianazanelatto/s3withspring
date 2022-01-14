@@ -9,7 +9,7 @@ import static com.dioclass.s3withspring.ServiceObjects.ObjectServices.*;
 public class S3withspringApplication {
 
 	public static void main(String[] args){
-		//criar um bucket
+		//bucket creation
 		String bucket_name = "dio-class-s3";
 		Bucket b = createBucket(bucket_name);
 		System.out.println("Creating the bucket " + bucket_name+"\n");
@@ -19,14 +19,14 @@ public class S3withspringApplication {
 		else
 			System.out.println("Done");
 
-		//listar todos os buckets existentes
+		//list of buckets
 		listOfBuckets();
 
-		//upload de imagem
+		//upload an image
 		String imagePath = "/home/jm/Pictures/index.jpeg";
 		uploadObject(bucket_name,imagePath);
 
-		// tentativa de upload de um arquivo .txt
+		// trying to upload a file .txt
 		String filePathTxt = "/home/jm/aws s3";
 		uploadObject(bucket_name,filePathTxt);
 	}

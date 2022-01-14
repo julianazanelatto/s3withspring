@@ -11,10 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonConfig {
-    /*Neste classe iremos definir as credenciais de acesso ao serviço de
-     * armazenamento da amazon - S3
-     * */
-
+    // the information to access the account
     private static final String ACCESS_KEY = "accessKey";
     private static final String SECRET_KEY = "47/ePCULmAce/secretKey";
 

@@ -7,16 +7,9 @@ import java.util.List;
 import static com.dioclass.s3withspring.Config.AmazonConfig.*;
 
 public class BucketBasicOperations {
-    /*vamos pensar sobre a teoria do S3.
-     * Dentro da amazon temos os recursos bucket e objetos que estão disponibilizados pelo serviço S3.
-     * Dessa forma, podemos ter acesso a estes recursos utilizando as APIs do serviço. Portanto, antes
-     * de tentarmos listar, criar ou deletar recursos precisamos definir o serviço S3. Dessa forma,
-     * as APIs estarão disponpíveis para utilização.
-     * */
 
     public static Bucket getBucket(String bucketName) {
         final AmazonS3 s3 = s3WithCredentials();
-        //pegamos a lista de buckets para selecionar o respectivo
         List<Bucket> buckets = s3.listBuckets();
         for (Bucket b : buckets) {
             if (b.getName().equals(bucketName))
