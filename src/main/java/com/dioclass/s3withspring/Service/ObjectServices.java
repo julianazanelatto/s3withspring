@@ -1,29 +1,44 @@
-package com.dioclass.s3withspring.ServiceObjects;
+package com.dioclass.s3withspring.Service;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
+
 import static com.dioclass.s3withspring.Config.AmazonConfig.*;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class ObjectServices {
-    public static void uploadObject(String bucketName, String filePath) {
+
+    public static void listObjects(String bucketName){
+        AmazonS3 s3 = s3WithCredentials();
+        ListObjectsV2Result result = s3.listObjectsV2(bucketName);
+        List<S3ObjectSummary> objects = result.getObjectSummaries();
+        for (S3ObjectSummary os : objects) {
+            System.out.println("* " + os.getKey());
+        }
+    }
+
+    public static boolean uploadObject(String bucketName, String filePath) {
+        filePath = "/home/jm/Pictures/"+filePath;
         String key_name = Paths.get(filePath).getFileName().toString();
         System.out.format("Uploading %s to S3 bucket %s...\n", filePath, bucketName);
         if (fileVerificationType(filePath)) {
             final AmazonS3 s3 = s3WithCredentials();
             try {
-                s3.putObject(bucketName, key_name, new File(filePath));
-            } catch (AmazonServiceException e) {
-                System.err.println(e.getErrorMessage());
+                PutObjectResult s = s3.putObject(bucketName, key_name, new File(filePath));
+            } catch (Exception e) {
+                //System.err.println(e.getErrorMessage());
+                System.out.println("Error: " + e.getMessage());
                 System.exit(1);
+                return false;
             }
             System.out.println("Done!");
+            return true;
         }else
             System.out.println("Verification file Failure: the file is not an image");
+        return false;
     }
-
 
     public static void uploadObjectWithMetadata(String bucketName, String filePath,
                                                 String title, String description) {
