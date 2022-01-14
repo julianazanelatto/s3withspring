@@ -15,13 +15,8 @@ public class AmazonConfig {
      * armazenamento da amazon - S3
      * */
 
-<<<<<<< HEAD
-    private static final String ACCESS_KEY = "accesskey";
-    private static final String SECRET_KEY = "47/ePCULmAce/secretkey";
-=======
     private static final String ACCESS_KEY = "accessKey";
     private static final String SECRET_KEY = "47/ePCULmAce/secretKey";
->>>>>>> Initial commit
 
     @Bean
     public static AmazonS3 s3WithCredentials(){

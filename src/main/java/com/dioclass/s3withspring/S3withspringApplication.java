@@ -13,6 +13,7 @@ public class S3withspringApplication {
 		String bucket_name = "dio-class-s3";
 		Bucket b = createBucket(bucket_name);
 		System.out.println("Creating the bucket " + bucket_name+"\n");
+
 		if (b == null)
 			System.out.println("Erro ao criar o bucket!\n");
 		else
