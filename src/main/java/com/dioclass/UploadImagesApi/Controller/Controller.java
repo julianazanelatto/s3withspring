@@ -57,6 +57,7 @@ public class Controller {
         try {
             ListObjectsV2Result result = s3.listObjectsV2(bucketName);
             List<S3ObjectSummary> objects = result.getObjectSummaries();
+            System.out.println("List of objects");
             for (S3ObjectSummary os : objects) {
                 System.out.println("* " + os.getKey());
             }
@@ -85,23 +86,24 @@ public class Controller {
     public ResponseEntity<?> createTheBucket(@PathVariable String bucketName) {
         final AmazonS3 s3 = s3ClientWithCredentials();
         Bucket newbucket = null;
-        boolean doesExists = s3.doesBucketExistV2(bucketName);
-        if (doesExists) {
-            System.out.format("*****\nBucket %s already exists.\n*****\n", bucketName);
-            newbucket = getBucket(bucketName);
-            if (verificationBucketOwner(newbucket) == false) {
-                String messageError = "The Bucket already exists. You don't own the bucket with this name.";
-                return new ResponseEntity<>(messageError, HttpStatus.METHOD_NOT_ALLOWED);
-            }else
-                return new ResponseEntity<>("The Bucket already exists!",HttpStatus.OK);
-        } else {
+
+        if (!s3.doesBucketExistV2(bucketName)) {
             try {
                 newbucket = s3.createBucket(bucketName);
             } catch (AmazonS3Exception e) {
                 return new ResponseEntity<>(e.getErrorMessage(),HttpStatus.BAD_REQUEST);
             }
+            return new ResponseEntity<>(newbucket,HttpStatus.OK);
         }
-        return new ResponseEntity<>(newbucket,HttpStatus.OK);
+
+        try{
+            newbucket = getBucket(bucketName);
+            return new ResponseEntity<>(newbucket, HttpStatus.OK);
+        }catch (AmazonS3Exception e) {
+            String messageError = "The Bucket already exists. You don't own the bucket with this name.\n" +
+                    "Amazon message error:" + e.getMessage();
+            return new ResponseEntity<>(messageError, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

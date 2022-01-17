@@ -2,12 +2,10 @@ package com.dioclass.s3withspring.Service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.Bucket;
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
-
 import static com.dioclass.s3withspring.Config.AmazonConfig.*;
-@Controller
+
 public class BucketServices {
 
     public static void listOfBuckets(){
@@ -29,28 +27,26 @@ public class BucketServices {
         return null;
     }
 
-    public static boolean verificationBucketOwner(Bucket bucket){
-        String owner = bucket.getOwner().getDisplayName();
-        return owner.equals("julianazanelatto");
-    }
-
-    public static Bucket createBucket(String bucketName) {
+    public static Bucket createBucket(String bucketName){
         final AmazonS3 s3 = s3WithCredentials();
-        Bucket newbucket;
-        boolean doesExists = s3.doesBucketExistV2(bucketName);
-        if (doesExists) {
-            System.out.format("*****\nBucket %s already exists.\n*****\n", bucketName);
-            newbucket = getBucket(bucketName);
-            if (!verificationBucketOwner(newbucket))
-                System.out.format("You don't own the bucket whit this name: %s",bucketName);
-                //return null;
-        } else {
+        Bucket newbucket = null;
+        boolean doesExist = s3.doesBucketExistV2(bucketName);
+        //System.err.println(doesExist);
+        if (doesExist){
+            System.out.println(("The bucket already exists!"));
             try {
-                newbucket = s3.createBucket(bucketName);
-            } catch (AmazonS3Exception e) {
                 newbucket = getBucket(bucketName);
-                System.out.println("AMAZON ERROR");
-                System.err.println(e.getErrorMessage());
+            }catch (AmazonS3Exception e){
+                System.err.println("You are not the owner of this bucket! " +
+                        "The bucket name is not available.\nMessage erorr: "+e.getMessage());
+                System.exit(1);
+            }
+        }else{
+            try{
+                newbucket = s3.createBucket(bucketName);
+            }catch(AmazonS3Exception e){
+                System.out.println("Error during the bucket creation!");
+                System.err.println("Message error:\n"+e.getMessage());
             }
         }
         return newbucket;

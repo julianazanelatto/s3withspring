@@ -80,5 +80,5 @@ public class ObjectServices {
                 fileName.substring(positionAfterDot + 1));
         System.out.println("You can upload this types of files: png, jpg and jpeg.");
         return false;
- }
+    }
 }
