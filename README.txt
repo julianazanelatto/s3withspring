@@ -10,15 +10,25 @@ relacionada ao acesso remoto. Neste projeto foi utilizado a versão 17 do Java.
 
 Página para criar seu projeto spring-boot: https://start.spring.io/
 
+No primero pacote utilizamos o framework spring boot com aws-java-sdk-s3 com intuito de criar um programa de upload via linha de comando. No segundo pacote o programa metódos HTTP foram definidos no Controller para executar as ações sobre os buckets e objetos que os compõem.
+
 O código está organizado como segue:
 
 Conteúdo
 --------
-->Config
-AmazonConfig.java
-->ServiceBucket
-BucketBasicOperations.java
-->ServiceObjects
-ObjectsServices.java
 
-S3withspringApplication.java
+Package s3withspring
+  ->Config
+    AmazonConfig.java
+  ->ServiceBucket
+    BucketBasicOperations.java
+  ->ServiceObjects
+    ObjectsServices.java
+  S3withspringApplication.java
+
+Package UploadImagesAPI
+  ->Config
+    AcessConfig.java
+  ->Controller
+    Controller.java
+  UploadMainApplication.java
